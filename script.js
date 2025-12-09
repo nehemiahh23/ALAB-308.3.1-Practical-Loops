@@ -84,3 +84,16 @@ for (let i in map1) {
 avgAge /= map1.length
 
 console.log(`Group average age: ${avgAge}`)
+
+// Part 5: Full Circle
+
+// Transform the final set of data back into CSV format
+let csv = Object.keys(map1[0]).join(",") + "\n"
+
+for (let i in map1) {
+	csv += Object.values(map1[i]).join(",")
+	console.log(typeof i)
+	i == map1.length - 1 ? null : csv += "\n"
+}
+
+console.log(JSON.stringify(csv))
