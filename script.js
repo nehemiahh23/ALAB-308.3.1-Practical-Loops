@@ -12,7 +12,10 @@
 // 	}
 // }
 
-// Part 3: Feeling Loopy
+// Part 3: Feeling Loopy (logged at the end)
+const csvData = "ID,Name,Occupation,Age\n42,Bruce,Knight,41\n57,Bob,Fry Cook,19\n63,Blaine,Quiz Master,58\n98,Bill,Doctor’s Assistant,26"
+const csvObj = csvToObject(csvData)
+const csvMatrix = csvToMatrix(csvData)
 
 function csvToObject(input) {
 	const data = []
@@ -56,15 +59,9 @@ function csvToObject(input) {
 	return data
 }
 
-const csvData = "ID,Name,Occupation,Age\n42,Bruce,Knight,41\n57,Bob,Fry Cook,19\n63,Blaine,Quiz Master,58\n98,Bill,Doctor’s Assistant,26"
-const csvObj = csvToObject(csvData)
-
-// console.log(`ObjectParsed CSV:`)
-// console.log(csvObj)
-
 // ---------------------------------- R-ALAB 308.4.1 - Working with Data Collections ----------------------------------
 
-// Part 2: Expanding Functionality
+// Part 2: Expanding Functionality (logged at the end)
 
 function csvToMatrix(input) {
 	const data = [[]]
@@ -100,39 +97,43 @@ function csvToMatrix(input) {
 			}
 		}
 	}
-
+	
 	return data
 }
 
-console.log(csvToMatrix(csvData))
+// Part 4: Sorting and Manipulating Data 
 
-// Part 4: Sorting and Manipulating Data
+csvObj.pop() // Remove the last element from the sorted array
 
-map1.pop() // Remove the last element from the sorted array
+csvObj.splice(1, 0, { id: "48", name: "Barry", occupation: "Runner", age: "25" }) // Insert the object at index 1
 
-map1.splice(1, 0, { id: "48", name: "Barry", occupation: "Runner", age: "25" }) // Insert the object at index 1
-
-map1.push({ id: "7", name: "Bilbo", occupation: "None", age: "111" }) // Add the object to the end of the array
+csvObj.push({ id: "7", name: "Bilbo", occupation: "None", age: "111" }) // Add the object to the end of the array
 
 // Calculate the average age of the group
 let avgAge = 0
 
-for (let i in map1) {
-	avgAge += Number(map1[i].age)
+for (let i in csvObj) {
+	avgAge += Number(csvObj[i].age)
 }
 
-avgAge /= map1.length
-
-// console.log(`Group average age: ${avgAge}`)
+avgAge /= csvObj.length
 
 // Part 5: Full Circle
 
 // Transform the final set of data back into CSV format
-let csv = Object.keys(map1[0]).join(",") + "\n"
+let csv = Object.keys(csvObj[0]).join(",") + "\n"
 
-for (let i in map1) {
-	csv += Object.values(map1[i]).join(",")
-	i == map1.length - 1 ? null : csv += "\n"
+for (let i in csvObj) {
+	csv += Object.values(csvObj[i]).join(",")
+	i == csvObj.length - 1 ? null : csv += "\n"
 }
 
-// console.log(JSON.stringify(csv))
+console.log(`CSV Parsed to Matrix:`)
+console.log(csvMatrix)
+console.log(`\n\n`)
+console.log(`CSV Parsed to Object:`)
+console.log(csvObj)
+console.log(`\n\n`)
+console.log(`Group average age: ${avgAge}\n\n`)
+
+console.log(`Object converted back to CSV: ` + JSON.stringify(csv))
