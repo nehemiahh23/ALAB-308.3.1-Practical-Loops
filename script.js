@@ -14,7 +14,7 @@
 
 // Part 3: Feeling Loopy
 
-function parseCSV(input) {
+function csvToObject(input) {
 	const data = []
 	const cols = []
 	let cell = ""
@@ -56,15 +56,56 @@ function parseCSV(input) {
 	return data
 }
 
+const csvData = "ID,Name,Occupation,Age\n42,Bruce,Knight,41\n57,Bob,Fry Cook,19\n63,Blaine,Quiz Master,58\n98,Bill,Doctor’s Assistant,26"
+const csvObj = csvToObject(csvData)
 
-const map1 = parseCSV("ID,Name,Occupation,Age\n42,Bruce,Knight,41\n57,Bob,Fry Cook,19\n63,Blaine,Quiz Master,58\n98,Bill,Doctor’s Assistant,26")
-// const map2 = parseCSV("Index,Mass (kg),Spring 1 (m),Spring 2 (m)\n1,0.00,0.050,0.050\n2,0.49,0.066,0.066\n3,0.98,0.087,0.080\n4,1.47,0.116,0.108\n5,1.96,0.142,0.138\n6,2.45,0.166,0.158\n7,2.94,0.193,0.174\n8,3.43,0.204,0.192\n9,3.92,0.226,0.205\n10,4.41,0.238,0.232")
-
-console.log(`Parsed CSV:`)
-console.log(map1)
-// console.log(map2)
+// console.log(`ObjectParsed CSV:`)
+// console.log(csvObj)
 
 // ---------------------------------- R-ALAB 308.4.1 - Working with Data Collections ----------------------------------
+
+// Part 2: Expanding Functionality
+
+function csvToMatrix(input) {
+	const data = [[]]
+	let cell = ""
+	let row = []
+	let rowIndex = 0
+
+	for (let c = 0; c < input.length; c++) {
+		if (rowIndex < 1) {
+			if (input[c] == ",") {
+				data[0].push(cell.toLowerCase())
+				cell = ""
+			} else if (input[c] == "\n") {
+				data[0].push(cell.toLowerCase())
+				cell = ""
+				rowIndex++
+			} else {
+				cell += input[c]
+			}
+		} else {
+			if (input[c] == ",") {
+				row = [...row, cell]
+				cell = ""
+				rowIndex++
+			} else if (input[c] == "\n" || c == input.length - 1) {
+				c == input.length - 1 ? cell += input[c] : null
+				row = [...row, cell]
+				data.push(row)
+				row = []
+				cell = ""
+			} else {
+				cell += input[c]
+			}
+		}
+	}
+
+	return data
+}
+
+console.log(csvToMatrix(csvData))
+
 // Part 4: Sorting and Manipulating Data
 
 map1.pop() // Remove the last element from the sorted array
@@ -74,7 +115,6 @@ map1.splice(1, 0, { id: "48", name: "Barry", occupation: "Runner", age: "25" }) 
 map1.push({ id: "7", name: "Bilbo", occupation: "None", age: "111" }) // Add the object to the end of the array
 
 // Calculate the average age of the group
-
 let avgAge = 0
 
 for (let i in map1) {
@@ -83,7 +123,7 @@ for (let i in map1) {
 
 avgAge /= map1.length
 
-console.log(`Group average age: ${avgAge}`)
+// console.log(`Group average age: ${avgAge}`)
 
 // Part 5: Full Circle
 
@@ -92,8 +132,7 @@ let csv = Object.keys(map1[0]).join(",") + "\n"
 
 for (let i in map1) {
 	csv += Object.values(map1[i]).join(",")
-	console.log(typeof i)
 	i == map1.length - 1 ? null : csv += "\n"
 }
 
-console.log(JSON.stringify(csv))
+// console.log(JSON.stringify(csv))
